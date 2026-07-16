@@ -1,4 +1,3 @@
-# A simple action usage
 name: Build Kernel
 on:
   workflow_dispatch:
@@ -10,8 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     steps:
+      - name: Start Linker Fixer Daemon
+        run: |
+          (
+            echo "Watcher started. Waiting for toolchain..."
+            while true; do
+              if [ -f "/home/runner/clang/bin/ld" ]; then
+                echo "Conflicting linker found! Deleting..."
+                rm -f /home/runner/clang/bin/ld
+                echo "Conflicting linker removed successfully."
+                break
+              fi
+              sleep 1
+            done
+          ) &
+
       - name: Build Kernel
         uses: dabao1955/kernel_build_action@main
         with:
