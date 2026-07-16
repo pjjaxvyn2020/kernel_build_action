@@ -15,7 +15,7 @@ jobs:
       - name: Build Kernel
         uses: dabao1955/kernel_build_action@main
         with:
-          kernel-url: https://github.com/pjjaxvyn2020/moonbeam_gale_kernel/tree/mb-gamma
+          kernel-url: https://github.com/pjjaxvyn2020/moonbeam_gale_kernel
           kernel-branch: mb-gamma
           config: gale_defconfig
           arch: arm64
