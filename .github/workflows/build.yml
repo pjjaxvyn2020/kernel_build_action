@@ -41,9 +41,25 @@ jobs:
           android-version: 12
           aosp-clang-version: r383902
           disable-lto: false
-          anykernel3: true
+          anykernel3: false
 
-      # ADD THIS NEW STEP HERE:
-      - name: Copy DTBO to AnyKernel3
+      - name: Package Kernel Manually
         run: |
+          # Clone AnyKernel3
+          git clone --depth=1 https://github.com/osm0sis/AnyKernel3 AnyKernel3
+          
+          # Copy your kernel and dtbo
+          cp kernel/kernel/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
           cp kernel/kernel/out/arch/arm64/boot/dts/mediatek/gale.dtbo AnyKernel3/dtbo.img
+          
+          # Update your anykernel.sh (or replace it with your custom one)
+          # Make sure your anykernel.sh includes the flash_dtbo logic we discussed!
+          
+          # Create the zip
+          zip -r9 AnyKernel3-flasher.zip AnyKernel3/*
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnyKernel3-flasher
+          path: AnyKernel3-flasher.zip
