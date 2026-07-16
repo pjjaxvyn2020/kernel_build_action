@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
       - name: Start Linker Fixer Daemon
         run: |
@@ -42,3 +42,8 @@ jobs:
           aosp-clang-version: r383902
           disable-lto: false
           anykernel3: true
+
+      # ADD THIS NEW STEP HERE:
+      - name: Copy DTBO to AnyKernel3
+        run: |
+          cp kernel/kernel/out/arch/arm64/boot/dts/mediatek/gale.dtbo AnyKernel3/dtbo.img
